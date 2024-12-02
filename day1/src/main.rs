@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::BufReader;
 use std::io::BufRead;
+use itertools::Itertools;
 
 fn main() {
     let filename = "input";
@@ -33,9 +34,30 @@ fn main() {
         i -= 1;
         let delta = left_numbers[i] - right_numbers[i];
         diff += delta.abs();
-        //println!("Diff between {} and {} is {}", left_numbers[i], right_numbers[i], delta)
+        // println!("Diff between {} and {} is {}", left_numbers[i], right_numbers[i], delta)
     }
 
     println!("Total difference is {diff}");
+
+    // Part 2
+    let mut i = left_numbers.len();
+    let right_counts = right_numbers.clone().into_iter().counts();    
+    let mut similarity: i64 = 0;
+
+    while i > 0 {
+        i -= 1;
+
+        let left_val: i64 = left_numbers[i];
+
+        // Value may not appear in right column at all
+        if right_counts.contains_key(&left_val) {
+            let right_count = right_counts[&left_val];
+            let scoremod: i64 = left_numbers[i] * i64::try_from(right_count).unwrap();
+            // println!("Value {} appears on right {} times, for an increase of {}", left_numbers[i], right_count, scoremod);
+            similarity += scoremod;
+        }
+    }
+
+    println!("Total Similarity is {similarity}");
 
 }
