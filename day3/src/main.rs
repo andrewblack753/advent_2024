@@ -7,8 +7,6 @@ fn main() {
     let contents: String = read_to_string(filename).expect("Should have been able to read the file");
 
     let re: Regex = Regex::new(r"mul\(([0-9]+),([0-9]+)\)").unwrap();
-    //let matches: Vec<&str> = re.find_iter(&contents).map(|m| m.as_str()).collect();
-    //let matches = re.captures_iter(&contents).map(|m| m.extract());
 
     let mut sum: i32 = 0;
 
@@ -25,6 +23,7 @@ fn main() {
 
     let mut count_index: usize = 1;
     let sub_string: &str = sub_strings[0];
+
     // mul()s before first don't() are all valid
     for (_, [first, second]) in re.captures_iter(&sub_string).map(|m: regex::Captures<'_>| m.extract()) {
         let product: i32 =  first.parse::<i32>().unwrap() * second.parse::<i32>().unwrap();
@@ -42,7 +41,6 @@ fn main() {
                 let product: i32 =  first.parse::<i32>().unwrap() * second.parse::<i32>().unwrap();
                 sum2 += product;
             }          
-
         }
         count_index += 1;
     }
