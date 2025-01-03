@@ -27,6 +27,17 @@ fn main() {
         }
     }
     println!("Result: {}", score);
+
+    // Day 2
+    score = 0;
+
+    for index in 0..num_cases {
+        if try_all_with_concatenate(test_values[index], &numbers[index][1..], numbers[index][0]) {
+            score += test_values[index];
+        }
+    }
+    println!("Result: {}", score);
+
 }
 
 fn try_all(test_value: u128, values: &[u128], sum: u128) -> bool {
@@ -41,4 +52,24 @@ fn try_all(test_value: u128, values: &[u128], sum: u128) -> bool {
         }
     }
     return false;
+}
+
+fn try_all_with_concatenate(test_value: u128, values: &[u128], sum: u128) -> bool {
+
+    if values.len() == 1 {
+        if test_value == values[0] + sum || test_value == values[0] * sum || test_value == together(sum, values[0]) {
+            return true;
+        }
+    }  else {
+        if try_all_with_concatenate(test_value, &values[1..], values[0] + sum)
+            || try_all_with_concatenate(test_value, &values[1..], values[0] * sum)
+            || try_all_with_concatenate(test_value, &values[1..], together(sum, values[0])) {
+            return true;
+        }
+    }
+    return false;
+}
+
+fn together(first_val: u128, second_val: u128) -> u128 {
+    return format!("{}{}", first_val, second_val).parse::<u128>().unwrap()
 }
